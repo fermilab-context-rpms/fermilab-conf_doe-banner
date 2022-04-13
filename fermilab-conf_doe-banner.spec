@@ -1,7 +1,7 @@
 Name:		fermilab-conf_doe-banner
 
 Version:	1.0
-Release:	5%{?dist}
+Release:	6%{?dist}
 Summary:	Includes the FNAL approved text for the DOE notice of usage
 
 Group:		Fermilab
@@ -16,7 +16,14 @@ Source3:	doe_banner_html.txt
 Requires:	filesystem system-release
 BuildArch:	noarch
 
-# This top level package doesn't require its subpackages
+Requires:	%{name}-login-screen == %{version}-%{release}
+# Top level package should require software specific packages
+%if 0%{?rhel} >= 9 || 0%{?fedora} >= 31
+Requires:	(%{name}-console == %{version}-%{release} if util-linux-core)
+Requires:	(%{name}-console == %{version}-%{release} if pam)
+%else
+Requires:	%{name}-console
+%endif
 
 %description
 The DOE requests that we publish a login banner on all systems so that
@@ -27,7 +34,7 @@ Requirement from: CS-doc-5536-v1
 %package cockpit
 Summary:	FNAL approved text for the DOE notice in cockpit
 Group:		Fermilab
-Requires:	%{name} >= %{version}-%{release}
+Requires:	%{name} == %{version}-%{release}
 Requires(pre):	augeas coreutils policycoreutils
 Requires(preun):	augeas coreutils policycoreutils
 
@@ -40,7 +47,7 @@ Requirement from: CS-doc-5536-v1
 %package console
 Summary:	FNAL approved text for the DOE notice on console
 Group:		Fermilab
-Requires:	%{name} >= %{version}-%{release}
+Requires:	%{name} == %{version}-%{release}
 
 %if 0%{?rhel} >= 9 || 0%{?fedora} >= 31
 # util-linux-core provides agetty
@@ -65,11 +72,12 @@ Requirement from: CS-doc-5536-v1
 %package login-screen
 Summary:	FNAL approved text for the DOE notice within GUI login
 Group:		Fermilab
-Requires:	%{name} >= %{version}-%{release}
+Requires:	%{name} == %{version}-%{release}
 
 # Top level sub-package should require software specific packages
-Requires:	%{name}-cockpit >= %{version}-%{release}
-Requires:	%{name}-gdm >= %{version}-%{release}
+Requires:	(%{name}-cockpit == %{version}-%{release} if cockpit-ws)
+Requires:	(%{name}-cockpit == %{version}-%{release} if cockpit)
+Requires:	(%{name}-gdm == %{version}-%{release} if gdm)
 
 %description login-screen
 The DOE requests that we publish a login banner on all systems so that
@@ -79,7 +87,7 @@ Requirement from: CS-doc-5536-v1
 
 %package gdm
 Summary:        FNAL approved text for the DOE notice within GUI login
-Requires:	%{name} >= %{version}-%{release}
+Requires:	%{name} == %{version}-%{release}
 Group:          Fermilab
 Requires(post):	dconf
 Requires(pre):	dconf
@@ -330,6 +338,9 @@ dconf update
 
 
 %changelog
+* Wed Apr 13 2022 Pat Riehecky <riehecky@fnal.gov> 1.0-5.1
+- Use boolean rich deps
+
 * Wed Mar 16 2022 Pat Riehecky <riehecky@fnal.gov> 1.0-5
 - now that motd and agetty support `.d` bits in EL9, break these out
 - Unify the various related packages into one spec with subpackages
