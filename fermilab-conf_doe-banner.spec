@@ -1,7 +1,7 @@
 Name:		fermilab-conf_doe-banner
 
 Version:	1.0
-Release:	6%{?dist}
+Release:	6.1%{?dist}
 Summary:	Includes the FNAL approved text for the DOE notice of usage
 
 Group:		Fermilab
@@ -124,12 +124,14 @@ ln -s %{_datarootdir}/%{name}/doe_banner_80_char.txt %{buildroot}/etc/motd.d/doe
 %{__mkdir_p} %{buildroot}/etc/dconf/db/distro.d/locks
 echo "### THIS FILE IS MANAGED BY fermilab-conf_doe-banner-gdm ###" > %{buildroot}/etc/dconf/db/distro.d/locks/20-login-banner
 echo "###  YOUR CHANGES HERE WILL BE REVERTED BY THIS PACAKGE  ###" >> %{buildroot}/etc/dconf/db/distro.d/locks/20-login-banner
+echo "/org/gnome/login-screen/banner-message-enable" >> %{buildroot}/etc/dconf/db/distro.d/locks/20-login-banner
 echo "/org/gnome/login-screen/banner-message-text" >> %{buildroot}/etc/dconf/db/distro.d/locks/20-login-banner
 DOEMSG_ONELINE=$(%{__cat} %{SOURCE2})
 %{__cat} << EOF >> %{buildroot}/etc/dconf/db/distro.d/20-login-banner
 ### THIS FILE IS MANAGED BY fermilab-conf_doe-banner-gdm ###
 ###  YOUR CHANGES HERE WILL BE REVERTED BY THIS PACAKGE  ###
 [org/gnome/login-screen]
+banner-message-enable=true
 banner-message-text="${DOEMSG_ONELINE}"
 EOF
 
@@ -338,7 +340,10 @@ dconf update
 
 
 %changelog
-* Wed Apr 13 2022 Pat Riehecky <riehecky@fnal.gov> 1.0-5.1
+* Wed Apr 13 2022 Pat Riehecky <riehecky@fnal.gov> 1.0-6.1
+- Fix missing gdm `enable`
+
+* Wed Apr 13 2022 Pat Riehecky <riehecky@fnal.gov> 1.0-6
 - Use boolean rich deps
 
 * Wed Mar 16 2022 Pat Riehecky <riehecky@fnal.gov> 1.0-5
