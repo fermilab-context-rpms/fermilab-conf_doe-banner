@@ -20,7 +20,7 @@
        and consent to these terms and conditions of use.
 
        LOG OFF IMMEDIATELY  if you do not agree to the conditions stated
-       inthis warning.
+       in this warning.
 
        Fermilab  policy  and  rules for computing, including appropriate
        use, may be found at http://www.fnal.gov/cd/main/cpolicy.html
