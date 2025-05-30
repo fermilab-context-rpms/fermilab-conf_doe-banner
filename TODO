@@ -1,0 +1,10 @@
+Move to heads-up-display@gnome-shell-extensions : https://issues.redhat.com/browse/RHEL-4096
+
+
+[org/gnome/shell]
+enabled-extensions=['heads-up-display@gnome-shell-extensions.gcampax.github.com']
+
+[org/gnome/shell/extensions/heads-up-display]
+message-body='This machine is the property of the US Government.\n\nUnauthorized access is strictly prohibited.\n\nAbusers will be prosecuted to the fullest extent of the law.\n'
+message-heading='CLASSIFIED SYSTEM'
+show-when-locked=true
